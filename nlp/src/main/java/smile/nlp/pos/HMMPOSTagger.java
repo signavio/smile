@@ -122,6 +122,9 @@ public class HMMPOSTagger implements POSTagger, Serializable {
                 ois.close();
             } catch (Exception ex) {
                 logger.error("Failed to load /smile/nlp/pos/hmmpostagger.model", ex);
+                if(ois != null){
+                    ois.close();
+                }
             }
         }
         return DEFAULT_TAGGER;
@@ -346,9 +349,8 @@ public class HMMPOSTagger implements POSTagger, Serializable {
         walkin(new File(dir), files);
 
         for (File file : files) {
-            try {
-                FileInputStream stream = new FileInputStream(file);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            try (FileInputStream stream = new FileInputStream(file);
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
                 String line = null;
                 List<String> sent = new ArrayList<>();
                 List<PennTreebankPOS> label = new ArrayList<>();
@@ -436,6 +438,9 @@ public class HMMPOSTagger implements POSTagger, Serializable {
             oos.close();
         } catch (Exception ex) {
             logger.error("Failed to save HMM POS model", ex);
+            if(oos != null){
+                oos.close();
+            }
         }
     }
 }

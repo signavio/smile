@@ -31,23 +31,6 @@ public class IOUtils {
 
     }
 
-    private static String home = System.getProperty("smile.home", "shell/src/universal/");
-
-    /** Get the file path of sample dataset. */
-    public static String getTestDataPath(String path) {
-        return home + "/data/" + path;
-    }
-
-    /** Get the file object of sample dataset. */
-    public static File getTestDataFile(String path) {
-        return new java.io.File(getTestDataPath(path));
-    }
-
-    /** Get the reader of sample datasets. */
-    public static BufferedReader getTestDataReader(String path) throws FileNotFoundException {
-        return new BufferedReader(new InputStreamReader(new FileInputStream(getTestDataFile(path))));
-    }
-
     /**
      * Returns the lines of an <code>InputStream</code> as a list of Strings.
      *

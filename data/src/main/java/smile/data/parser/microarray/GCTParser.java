@@ -127,7 +127,9 @@ public class GCTParser {
      * @throws java.io.IOException
      */
     public AttributeDataset parse(File file) throws IOException, ParseException {
-        return parse(file.getPath(), new FileInputStream(file));
+        try (FileInputStream stream = new FileInputStream(file)) {
+            return parse(file.getPath(), stream);
+        }
     }
 
     /**
@@ -136,7 +138,9 @@ public class GCTParser {
      * @throws java.io.IOException
      */
     public AttributeDataset parse(String name, File file) throws IOException, ParseException {
-        return parse(name, new FileInputStream(file));
+        try (FileInputStream stream = new FileInputStream(file)) {
+            return parse(name, stream);
+        }
     }
 
     /**
