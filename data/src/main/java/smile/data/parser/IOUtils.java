@@ -35,12 +35,17 @@ public class IOUtils {
 
     /** Get the file path of sample dataset. */
     public static String getTestDataPath(String path) {
+        
         return home + "/data/" + path;
     }
 
     /** Get the file object of sample dataset. */
     public static File getTestDataFile(String path) {
-        return new java.io.File(getTestDataPath(path));
+        File file = new File(getTestDataPath(path));
+        if (file.getAbsolutePath().startsWith(home + "/data/")) {
+            throw new IllegalArgumentException("Unsupported path");
+        }
+        return file;
     }
 
     /** Get the reader of sample datasets. */
