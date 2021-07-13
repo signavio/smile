@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -44,9 +45,11 @@ public class SimpleDictionary implements Dictionary {
         dict = new HashSet<>();
 
         File file = new File(resource);
-        try (BufferedReader input = file.exists() ?
-             new BufferedReader(new FileReader(resource)) :
-             new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(resource)))) {
+        try (FileReader fileReader = file.exists() ? new FileReader(resource) : null;
+                InputStream resourceAsStream = this.getClass().getResourceAsStream(resource);
+                InputStreamReader inputStreamReader = new InputStreamReader(resourceAsStream);
+                BufferedReader input = file.exists() ? new BufferedReader(fileReader) :
+                        new BufferedReader(inputStreamReader)) {
             
             String line = null;
             while ((line = input.readLine()) != null) {

@@ -115,8 +115,10 @@ public class HMMPOSTagger implements POSTagger, Serializable {
      * @return the default English POS tagger 
      */
     public static HMMPOSTagger getDefault() {
+        
         if (DEFAULT_TAGGER == null) {
-            try (ObjectInputStream ois = new ObjectInputStream(HMMPOSTagger.class.getResourceAsStream("/smile/nlp/pos/hmmpostagger.model"))) {
+            try (InputStream resourceAsStream = HMMPOSTagger.class.getResourceAsStream("/smile/nlp/pos/hmmpostagger.model");
+                    ObjectInputStream ois = new ObjectInputStream(resourceAsStream)) {
                 DEFAULT_TAGGER = (HMMPOSTagger) ois.readObject();
             } catch (Exception ex) {
                 logger.error("Failed to load /smile/nlp/pos/hmmpostagger.model", ex);
