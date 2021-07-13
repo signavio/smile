@@ -116,15 +116,10 @@ public class HMMPOSTagger implements POSTagger, Serializable {
      */
     public static HMMPOSTagger getDefault() {
         if (DEFAULT_TAGGER == null) {
-            try {
-                ObjectInputStream ois = new ObjectInputStream(HMMPOSTagger.class.getResourceAsStream("/smile/nlp/pos/hmmpostagger.model"));
+            try (ObjectInputStream ois = new ObjectInputStream(HMMPOSTagger.class.getResourceAsStream("/smile/nlp/pos/hmmpostagger.model"))) {
                 DEFAULT_TAGGER = (HMMPOSTagger) ois.readObject();
-                ois.close();
             } catch (Exception ex) {
                 logger.error("Failed to load /smile/nlp/pos/hmmpostagger.model", ex);
-                if(ois != null){
-                    ois.close();
-                }
             }
         }
         return DEFAULT_TAGGER;
@@ -429,18 +424,13 @@ public class HMMPOSTagger implements POSTagger, Serializable {
         PennTreebankPOS[][] y = labels.toArray(new PennTreebankPOS[labels.size()][]);
         
         HMMPOSTagger tagger = HMMPOSTagger.learn(x, y);
-
-        try {
-            FileOutputStream fos = new FileOutputStream("hmmpostagger.model");
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
+        
+        try (FileOutputStream fos = new FileOutputStream("hmmpostagger.model");
+                ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             oos.writeObject(tagger);
             oos.flush();
-            oos.close();
         } catch (Exception ex) {
             logger.error("Failed to save HMM POS model", ex);
-            if(oos != null){
-                oos.close();
-            }
         }
     }
 }
