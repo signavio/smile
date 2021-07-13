@@ -30,7 +30,29 @@ public class IOUtils {
     private IOUtils() {
 
     }
-
+    
+    private static String home = System.getProperty("smile.home", "shell/src/universal/");
+    
+    /** Get the file path of sample dataset. */
+    public static String getTestDataPath(String path) {
+        
+        return home + "/data/" + path;
+    }
+    
+    /** Get the file object of sample dataset. */
+    public static File getTestDataFile(String path) {
+        File file = new File(getTestDataPath(path));
+        if (file.getAbsolutePath().startsWith(home + "/data/")) {
+            throw new IllegalArgumentException("Unsupported path");
+        }
+        return file;
+    }
+    
+    /** Get the reader of sample datasets. */
+    public static BufferedReader getTestDataReader(String path) throws FileNotFoundException {
+        return new BufferedReader(new InputStreamReader(new FileInputStream(getTestDataFile(path))));
+    }
+    
     /**
      * Returns the lines of an <code>InputStream</code> as a list of Strings.
      *
