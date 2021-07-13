@@ -35,7 +35,6 @@ public class IOUtils {
     
     /** Get the file path of sample dataset. */
     public static String getTestDataPath(String path) {
-        
         return home + "/data/" + path;
     }
     
