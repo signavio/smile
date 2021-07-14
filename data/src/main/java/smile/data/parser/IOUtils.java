@@ -41,7 +41,7 @@ public class IOUtils {
     /** Get the file object of sample dataset. */
     public static File getTestDataFile(String path) {
         File file = new File(getTestDataPath(path));
-        if (file.getAbsolutePath().startsWith(home + "/data/")) {
+        if (!file.getAbsolutePath().startsWith(home + "/data/")) {
             throw new IllegalArgumentException("Unsupported path");
         }
         return file;
