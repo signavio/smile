@@ -131,8 +131,8 @@ public class FileChooser extends JFileChooser {
                     logger.error("Failed to read image {}", file, ex);
                 }
             } else {
-                try {
-                    FileReader reader = new FileReader(file);
+                try (FileReader reader = new FileReader(file)){
+                    
                     int len = reader.read(buf, 0, buf.length);
                     reader.close();
                     boolean binary = false;

@@ -78,7 +78,9 @@ public class SparseMatrixParser {
      * @throws java.io.IOException
      */
     public SparseMatrix parse(File file) throws IOException, ParseException {
-        return parse(new FileInputStream(file));
+        try (FileInputStream fileInputStream = new FileInputStream(file)){
+            return parse(fileInputStream);
+        }
     }
 
     /**

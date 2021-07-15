@@ -95,9 +95,8 @@ public class ApproximateStringSearchDemo extends JPanel implements Runnable, Act
             System.out.print("Loading dataset...");
             List<String> words = new ArrayList<>();
 
-            try {
-                FileInputStream stream = new FileInputStream(smile.data.parser.IOUtils.getTestDataFile("index.noun"));
-                BufferedReader input = new BufferedReader(new InputStreamReader(stream));
+            try (FileInputStream stream = new FileInputStream(smile.data.parser.IOUtils.getTestDataFile("index.noun"));
+                    BufferedReader input = new BufferedReader(new InputStreamReader(stream))){
                 String line = input.readLine();
                 while (line != null) {
                     if (!line.startsWith(" ")) {

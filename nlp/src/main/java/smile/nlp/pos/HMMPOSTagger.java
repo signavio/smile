@@ -115,11 +115,11 @@ public class HMMPOSTagger implements POSTagger, Serializable {
      * @return the default English POS tagger 
      */
     public static HMMPOSTagger getDefault() {
+        
         if (DEFAULT_TAGGER == null) {
-            try {
-                ObjectInputStream ois = new ObjectInputStream(HMMPOSTagger.class.getResourceAsStream("/smile/nlp/pos/hmmpostagger.model"));
+            try (InputStream resourceAsStream = HMMPOSTagger.class.getResourceAsStream("/smile/nlp/pos/hmmpostagger.model");
+                    ObjectInputStream ois = new ObjectInputStream(resourceAsStream)) {
                 DEFAULT_TAGGER = (HMMPOSTagger) ois.readObject();
-                ois.close();
             } catch (Exception ex) {
                 logger.error("Failed to load /smile/nlp/pos/hmmpostagger.model", ex);
             }
@@ -346,9 +346,8 @@ public class HMMPOSTagger implements POSTagger, Serializable {
         walkin(new File(dir), files);
 
         for (File file : files) {
-            try {
-                FileInputStream stream = new FileInputStream(file);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            try (FileInputStream stream = new FileInputStream(file);
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
                 String line = null;
                 List<String> sent = new ArrayList<>();
                 List<PennTreebankPOS> label = new ArrayList<>();
@@ -427,13 +426,11 @@ public class HMMPOSTagger implements POSTagger, Serializable {
         PennTreebankPOS[][] y = labels.toArray(new PennTreebankPOS[labels.size()][]);
         
         HMMPOSTagger tagger = HMMPOSTagger.learn(x, y);
-
-        try {
-            FileOutputStream fos = new FileOutputStream("hmmpostagger.model");
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
+        
+        try (FileOutputStream fos = new FileOutputStream("hmmpostagger.model");
+                ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             oos.writeObject(tagger);
             oos.flush();
-            oos.close();
         } catch (Exception ex) {
             logger.error("Failed to save HMM POS model", ex);
         }

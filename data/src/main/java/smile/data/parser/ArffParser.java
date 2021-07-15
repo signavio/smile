@@ -346,7 +346,9 @@ public class ArffParser {
      * @throws java.io.IOException
      */
     public static Attribute[] getAttributes(File file) throws IOException, ParseException {
-        return getAttributes(new FileInputStream(file));
+        try (FileInputStream stream = new FileInputStream(file)) {
+            return getAttributes(stream);
+        }
     }
 
     /**
