@@ -129,7 +129,9 @@ public class PCLParser {
      * @throws java.io.IOException
      */
     public AttributeDataset parse(String name, File file) throws IOException, ParseException {
-        return parse(file);
+        try (FileInputStream stream = new FileInputStream(file)) {
+            return parse(name, stream);
+        }
     }
 
     /**
